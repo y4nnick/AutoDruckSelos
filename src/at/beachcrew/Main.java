@@ -7,7 +7,10 @@ public class Main {
     public static void main(String[] args) {
 
         try{
-            printer.addFolderWatch("/Applications/XAMPP/htdocs/selos/backend/core/manager/print/");
+           // printer.addFolderWatch("C:\\xampp\\htdocs\\");
+
+            //  printer.addFolderWatch("C:/xampp/htdocs/selos/backend/core/manager/print/");
+            printer.addFolderWatch("C:\\xampp\\htdocs\\selos\\backend\\core\\manager\\print\\");
         }catch (Exception e){
             System.err.print(e);
         }

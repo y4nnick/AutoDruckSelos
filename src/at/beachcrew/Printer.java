@@ -31,11 +31,12 @@ public class Printer {
         if (ps.length == 0) {
             throw new IllegalStateException("No Printer found");
         }
-        System.out.println("Available printers: " + Arrays.asList(ps));
+        System.out.println("Available printers:");
 
         for (PrintService printService : ps) {
+            System.out.println("- " +  printService.getName());
 
-            if (printService.getName().equals("Officejet 7500 E910")) {
+            if (printService.getName().equals("HP Officejet 7500 E910 (Netzwerk)")) {
                 printerA3 = printService;
                 break;
             }
@@ -43,7 +44,7 @@ public class Printer {
 
         if (printerA3 == null) {
             System.err.println("--> A3 printer not found");
-            throw new IllegalStateException("Printer not found");
+//            throw new IllegalStateException("Printer not found");
         }else{
             System.out.println("--> A3 printer found");
         }
