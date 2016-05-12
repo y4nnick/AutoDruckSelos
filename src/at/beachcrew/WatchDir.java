@@ -31,6 +31,7 @@ package at.beachcrew;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import javax.print.PrintService;
 import javax.print.attribute.standard.MediaSizeName;
 import java.nio.file.*;
 import static java.nio.file.StandardWatchEventKinds.*;
@@ -50,8 +51,10 @@ public class WatchDir {
     private final Map<WatchKey,Path> keys;
     private boolean trace = false;
 
+    private PrintService printerA3_A4;
+    private PrintService printerA5;
+
     private Printer printer;
-    private MediaSizeName size;
 
     @SuppressWarnings("unchecked")
     static <T> WatchEvent<T> cast(WatchEvent<?> event) {
@@ -79,13 +82,24 @@ public class WatchDir {
     /**
      * Creates a WatchService and registers the given directory
      */
-    WatchDir(Path dir, Printer printer, MediaSizeName size) throws IOException {
+    WatchDir(String baseFolder, PrintService printerA3_A4, PrintService printerA5, Printer printer) throws IOException {
         this.watcher = FileSystems.getDefault().newWatchService();
         this.keys = new HashMap<WatchKey,Path>();
+        this.printerA3_A4 = printerA3_A4;
+        this.printerA5 = printerA5;
         this.printer = printer;
-        this.size = size;
 
-        register(dir);
+        //A3
+        Path dirA3 =  Paths.get(baseFolder+"printA3_Raster");
+        register(dirA3);
+
+        //A4
+        Path dirA4 =  Paths.get(baseFolder+"printA4_Raster");
+        register(dirA4);
+
+        //A5
+        Path dirA5 =  Paths.get(baseFolder+"printA5");
+        register(dirA5);
 
         this.trace = true;
     }
@@ -123,11 +137,28 @@ public class WatchDir {
                 Path name = ev.context();
                 Path child = dir.resolve(name);
 
+                //Check welche Größe gedruckt werden soll und auf welchen Drucker
+
+                String file = child.toString();
+
+                PrintService printerService;
+                MediaSizeName size;
+
+                if(file.contains("printA3_Raster")){
+                    printerService = printerA3_A4;
+                    size = MediaSizeName.ISO_A3;
+                }else if(file.contains("printA4_Raster")){
+                    printerService = printerA3_A4;
+                    size = MediaSizeName.ISO_A4;
+                }else{ //(file.contains("printA5"))
+                    printerService = printerA5;
+                    size = MediaSizeName.ISO_A5;
+                }
+
                 // print out event
-                System.out.format("%s: %s\n", event.kind().name(), child);
+                System.out.format("%s: Found file for printing: %s\n", event.kind().name(), child);
 
-                printer.printFile(child.toString(), MediaSizeName.ISO_A3);
-
+                printer.printFile(printerService, child.toString(), size);
             }
 
             // reset key and remove from set if directory no longer accessible

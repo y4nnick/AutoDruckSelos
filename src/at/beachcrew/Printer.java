@@ -16,12 +16,15 @@ import java.util.*;
  */
 public class Printer {
 
-    private PrintService myService = null;
+    private PrintService printerA3 = null;
+    private PrintService printerA5 = null;
 
     /**
      * Searches for the printer
      */
     public Printer(){
+
+        System.out.println("####### SEARCHING FOR PRINTER ###########");
 
         //Find printer
         PrintService[] ps = PrintServiceLookup.lookupPrintServices(null, null);
@@ -33,14 +36,24 @@ public class Printer {
         for (PrintService printService : ps) {
 
             if (printService.getName().equals("Officejet 7500 E910")) {
-                myService = printService;
+                printerA3 = printService;
                 break;
             }
         }
 
-        if (myService == null) {
+        if (printerA3 == null) {
+            System.err.println("--> A3 printer not found");
             throw new IllegalStateException("Printer not found");
+        }else{
+            System.out.println("--> A3 printer found");
         }
+
+        if (printerA5 == null) {
+            System.err.println("--> A5 printer not found");
+        }else{
+            System.out.println("--> A5 printer found");
+        }
+
     }
 
     //Folder where the printed files are copied to
@@ -49,13 +62,11 @@ public class Printer {
 
     /**
      * Adds a folder which should be watched for files
-     * @param folder
-     * @param size
+     * @param baseFolder
      * @throws IOException
      */
-    public void addFolderWatch(String folder, MediaSizeName size) throws IOException{
-        Path dir =  Paths.get(folder);
-        new WatchDir(dir, this,size).processEvents();
+    public void addFolderWatch(String baseFolder) throws IOException{
+        new WatchDir(baseFolder,printerA3,printerA5, this).processEvents();
     }
 
     /**
@@ -63,11 +74,11 @@ public class Printer {
      * @param file
      * @param size
      */
-    public void printFile(String file, MediaSizeName size){
+    public void printFile(PrintService service, String file, MediaSizeName size){
         try{
             FileInputStream fis = new FileInputStream(file);
             Doc pdfDoc = new SimpleDoc(fis, DocFlavor.INPUT_STREAM.AUTOSENSE, null);
-            DocPrintJob printJob = myService.createPrintJob();
+            DocPrintJob printJob = service.createPrintJob();
             PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
 
             attributes.add(OrientationRequested.LANDSCAPE);
@@ -75,8 +86,12 @@ public class Printer {
 
             printJob.print(pdfDoc, attributes);
             fis.close();
+
+            System.out.format("%s: Druckauftrag gesendet: ",file);
         }catch (Exception e){
+            System.err.format("%s: Fehler während Druck: ",file);
             System.err.print(e);
+
         }
     }
 }
