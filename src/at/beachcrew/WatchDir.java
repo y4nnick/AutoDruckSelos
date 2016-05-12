@@ -128,7 +128,7 @@ public class WatchDir {
                 WatchEvent.Kind kind = event.kind();
 
                 // TBD - provide example of how OVERFLOW event is handled
-                if (kind == OVERFLOW) {
+                if (kind != ENTRY_CREATE) {
                     continue;
                 }
 

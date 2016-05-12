@@ -32,7 +32,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Printer.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Printer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/at/beachcrew/Printer.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="561">
@@ -75,8 +75,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/at/beachcrew/WatchDir.java" />
-        <option value="$PROJECT_DIR$/src/at/beachcrew/Printer.java" />
         <option value="$PROJECT_DIR$/src/at/beachcrew/Main.java" />
+        <option value="$PROJECT_DIR$/src/at/beachcrew/Printer.java" />
       </list>
     </option>
   </component>
@@ -368,12 +368,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1463044897596</updated>
-      <workItem from="1463044899268" duration="7413000" />
+      <workItem from="1463044899268" duration="8509000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7413000" />
+    <option name="totallyTimeSpent" value="8509000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -453,6 +453,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< Updated upstream
     <entry file="file://$PROJECT_DIR$/src/at/beachcrew/WatchDir.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -464,5 +465,23 @@
         </state>
       </provider>
     </entry>
+=======
+    <entry file="file://$PROJECT_DIR$/src/at/beachcrew/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="21" selection-start-line="0" selection-start-column="21" selection-end-line="0" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/at/beachcrew/Printer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.01923077">
+          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+>>>>>>> Stashed changes
   </component>
 </project>
