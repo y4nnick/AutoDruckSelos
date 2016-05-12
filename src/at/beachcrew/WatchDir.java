@@ -46,6 +46,11 @@ import java.util.*;
 
 public class WatchDir {
 
+    private static int counterA5 = 0;
+    private static int counterA3 = 0;
+    private static int counterA4 = 0;
+    private static int counterSum = 0;
+
 
     private final WatchService watcher;
     private final Map<WatchKey,Path> keys;
@@ -66,6 +71,9 @@ public class WatchDir {
      */
     private void register(Path dir) throws IOException {
         WatchKey key = dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
+
+        System.out.println("Watching for new files in: "+dir);
+
         if (trace) {
             Path prev = keys.get(key);
             if (prev == null) {
@@ -100,6 +108,8 @@ public class WatchDir {
         //A5
         Path dirA5 =  Paths.get(baseFolder+"printA5");
         register(dirA5);
+
+        System.out.println("-----------------------------------------------------");
 
         this.trace = true;
     }
@@ -147,16 +157,21 @@ public class WatchDir {
                 if(file.contains("printA3_Raster")){
                     printerService = printerA3_A4;
                     size = MediaSizeName.ISO_A3;
+                    counterA3++;
                 }else if(file.contains("printA4_Raster")){
                     printerService = printerA3_A4;
                     size = MediaSizeName.ISO_A4;
+                    counterA4++;
                 }else{ //(file.contains("printA5"))
                     printerService = printerA5;
                     size = MediaSizeName.ISO_A5;
+                    counterA5++;
                 }
 
+                counterSum++;
+
                 // print out event
-                System.out.format("%s: Found file for printing: %s\n", event.kind().name(), child);
+                System.out.println("#"+counterSum+": \tFound new file: " + child);
 
                 printer.printFile(printerService, child.toString(), size);
             }
