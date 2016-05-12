@@ -31,6 +31,7 @@ package at.beachcrew;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import javax.print.attribute.standard.MediaSizeName;
 import java.nio.file.*;
 import static java.nio.file.StandardWatchEventKinds.*;
 import static java.nio.file.LinkOption.*;
@@ -50,6 +51,7 @@ public class WatchDir {
     private boolean trace = false;
 
     private Printer printer;
+    private MediaSizeName size;
 
     @SuppressWarnings("unchecked")
     static <T> WatchEvent<T> cast(WatchEvent<?> event) {
@@ -77,14 +79,14 @@ public class WatchDir {
     /**
      * Creates a WatchService and registers the given directory
      */
-    WatchDir(Path dir, Printer printer) throws IOException {
+    WatchDir(Path dir, Printer printer, MediaSizeName size) throws IOException {
         this.watcher = FileSystems.getDefault().newWatchService();
         this.keys = new HashMap<WatchKey,Path>();
         this.printer = printer;
+        this.size = size;
 
         register(dir);
 
-        // enable trace after initial registration
         this.trace = true;
     }
 
@@ -124,9 +126,7 @@ public class WatchDir {
                 // print out event
                 System.out.format("%s: %s\n", event.kind().name(), child);
 
-                //TODO print
-
-                printer.printFile(child.toString(),"A3");
+                printer.printFile(child.toString(), MediaSizeName.ISO_A3);
 
             }
 

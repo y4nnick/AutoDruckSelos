@@ -3,17 +3,11 @@ package at.beachcrew;
 import javax.print.*;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.Sides;
+import javax.print.attribute.standard.MediaSizeName;
+import javax.print.attribute.standard.OrientationRequested;
 import java.nio.file.Path;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
-import java.util.HashMap;
-import java.util.Map;
 
 import java.nio.file.*;
-import static java.nio.file.StandardWatchEventKinds.*;
-import static java.nio.file.LinkOption.*;
-import java.nio.file.attribute.*;
 import java.io.*;
 import java.util.*;
 
@@ -29,6 +23,7 @@ public class Printer {
      */
     public Printer(){
 
+        //Find printer
         PrintService[] ps = PrintServiceLookup.lookupPrintServices(null, null);
         if (ps.length == 0) {
             throw new IllegalStateException("No Printer found");
@@ -48,8 +43,6 @@ public class Printer {
         }
     }
 
-    private HashMap<String,String> folder = new HashMap<>();
-
     //Folder where the printed files are copied to
     private String finishedFolder = null;
 
@@ -57,14 +50,12 @@ public class Printer {
     /**
      * Adds a folder which should be watched for files
      * @param folder
-     * @param action
+     * @param size
      * @throws IOException
      */
-    public void addFolderWatch(String folder, String action) throws IOException{
-        this.folder.put(folder,action);
-
+    public void addFolderWatch(String folder, MediaSizeName size) throws IOException{
         Path dir =  Paths.get(folder);
-        new WatchDir(dir, this).processEvents();
+        new WatchDir(dir, this,size).processEvents();
     }
 
     /**
@@ -72,19 +63,20 @@ public class Printer {
      * @param file
      * @param size
      */
-    public void printFile(String file, String size){
-
+    public void printFile(String file, MediaSizeName size){
         try{
             FileInputStream fis = new FileInputStream(file);
-
             Doc pdfDoc = new SimpleDoc(fis, DocFlavor.INPUT_STREAM.AUTOSENSE, null);
             DocPrintJob printJob = myService.createPrintJob();
+            PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
 
-            printJob.print(pdfDoc, new HashPrintRequestAttributeSet());
+            attributes.add(OrientationRequested.LANDSCAPE);
+            attributes.add(size);
+
+            printJob.print(pdfDoc, attributes);
             fis.close();
         }catch (Exception e){
             System.err.print(e);
         }
-
     }
 }
