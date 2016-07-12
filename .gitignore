@@ -1,4 +1,7 @@
 *.xml
-*.xml
+/.idea
+/out
+
 
 .idea/workspace.xml
+/AutoDruckSelos.iml
