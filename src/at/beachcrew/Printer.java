@@ -122,31 +122,3 @@ public class Printer {
         }
     }
 }
-
-//Open & decode the pdf file
-         /*   PdfDecoder decode_pdf = new PdfDecoder(true);
-            decode_pdf.openPdfFile(file);
-            //Get the total number of pages in the pdf file
-            int pageCount = decode_pdf.getPageCount();
-            //set to print all pages
-            decode_pdf.setPagePrintRange(1, pageCount);
-            //Auto-rotate and scale flag
-            decode_pdf.setPrintAutoRotateAndCenter(false);
-            // Are we printing the current area only
-            decode_pdf.setPrintCurrentView(false);
-            //set mode - see org.jpedal.objects.contstants.PrinterOptions for all values
-            //the pdf file already is in the desired format. So turn off scaling
-            decode_pdf.setPrintPageScalingMode(PrinterOptions.PAGE_SCALING_NONE);
-            //by default scaling will center on page as well.
-            decode_pdf.setCenterOnScaling(false);
-            //flag if we use paper size or PDF size.
-            //Use PDF size as it already has the desired paper size
-            decode_pdf.setUsePDFPaperSize(true);
-            //setup print job and objects
-            PrinterJob printJob = PrinterJob.getPrinterJob();
-            printJob.setPrintService(service);
-            //setup Java Print Service (JPS) to use JPedal
-            printJob.setPageable(decode_pdf);
-            //Print the file to the desired printer
-            printJob.print();
-*/
